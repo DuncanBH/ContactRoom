@@ -1,6 +1,7 @@
 package com.duncbh.contactroom.util;
 
 import android.content.Context;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.room.Database;
@@ -14,17 +15,19 @@ import com.duncbh.contactroom.model.Contact;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-@Database(entities = (Contact.class), version = 1, exportSchema = false)
+@Database(entities = {Contact.class}, version = 1, exportSchema = false)
 public abstract class ContactRoomDatabase extends RoomDatabase {
     private static final int NUMBER_OF_THREADS = 4;
 
     public abstract ContactDao contactDao();
 
     private static volatile ContactRoomDatabase INSTANCE;
+
     private static final RoomDatabase.Callback sRoomDatabaseCallback =
             new RoomDatabase.Callback() {
-                public void OnCreate(@NonNull SupportSQLiteDatabase db) {
-                    super.onCreate(); //TODO: start back up on video 64
+                public void onCreate(@NonNull SupportSQLiteDatabase db) {
+                    Log.d("TEST", "Hello from onCreate in the Callback");
+                    super.onCreate(db);
                     databaseWriteExecutor.execute(() -> {
                         ContactDao contactDao = INSTANCE.contactDao();
                         contactDao.deleteAll();
@@ -46,6 +49,7 @@ public abstract class ContactRoomDatabase extends RoomDatabase {
         if (INSTANCE == null) {
             synchronized (ContactRoomDatabase.class) {
                 if (INSTANCE == null) {
+                    Log.d("TEST", "Hello from the getDatabase");
                     INSTANCE = Room.databaseBuilder(context.getApplicationContext(),
                             ContactRoomDatabase.class, "contact_database")
                             .addCallback(sRoomDatabaseCallback)

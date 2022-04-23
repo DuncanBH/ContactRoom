@@ -20,11 +20,12 @@ public class ContactRepository {
         allContacts = contactDao.getAllContacts();
     }
 
-    public LiveData<List<Contact>> getAllContacts() {
+    public LiveData<List<Contact>> getAllData() {
         return allContacts;
     }
 
     public void insert(Contact contact) {
         ContactRoomDatabase.databaseWriteExecutor.execute(() -> contactDao.insert(contact));
     }
+
 }
