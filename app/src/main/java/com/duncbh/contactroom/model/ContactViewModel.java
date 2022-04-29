@@ -28,7 +28,7 @@ public class ContactViewModel extends AndroidViewModel {
         repository.insert(contact);
     }
 
-//    public LiveData<Contact> get(int id) {return repository.get(id);}
-//    public static void update(Contact contact) {return repository.update(contact);}
-//    public static void delete(Contact contact) {return repository.delete(contact);}
-}
+    public LiveData<Contact> get(int id) {return repository.get(id);}
+    public static void update(Contact contact) {repository.update(contact);}
+    public static void delete(Contact contact) {repository.delete(contact);}
+} //todo: pick up from 73
