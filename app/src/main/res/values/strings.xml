@@ -5,4 +5,6 @@
     <string name="text_save">Save</string>
     <string name="empty">Enter information</string>
     <string name="description_text">Plus Button Icon</string>
+    <string name="update_text">Update</string>
+    <string name="delete_text">Delete</string>
 </resources>
