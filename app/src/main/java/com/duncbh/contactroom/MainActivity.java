@@ -19,6 +19,8 @@ import com.duncbh.contactroom.adapter.RecyclerViewAdapter;
 import com.duncbh.contactroom.model.Contact;
 import com.duncbh.contactroom.model.ContactViewModel;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.snackbar.BaseTransientBottomBar;
+import com.google.android.material.snackbar.Snackbar;
 
 import java.util.List;
 
@@ -64,16 +66,23 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewAdapt
 
     ActivityResultLauncher<Intent> newContactResultLauncher = registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(),
-            new ActivityResultCallback<ActivityResult>() {
-                @Override
-                public void onActivityResult(ActivityResult result) {
-                    if (result.getResultCode() == Activity.RESULT_OK) {
-                        Intent data = result.getData();
+            result -> {
+                if(result.getResultCode()== Activity.RESULT_OK){
+                    Intent data = result.getData();
+                    if(data.hasExtra(NewContact.SNACKBAR_TEXT)){
+                        Log.d("TAG", String.valueOf(data.getIntExtra(NewContact.SNACKBAR_TEXT,0)));
+
+                        Snackbar.make(recyclerView,data.getIntExtra(NewContact.SNACKBAR_TEXT,0), BaseTransientBottomBar.LENGTH_SHORT).show();
+                    }
+                    if(data.hasExtra(NewContact.NAME_REPLY)&&data.hasExtra(NewContact.OCCUPATION_REPLY)) {
 
                         String name = data.getStringExtra(NewContact.NAME_REPLY);
                         String occupation = data.getStringExtra(NewContact.OCCUPATION_REPLY);
 
                         Contact contact = new Contact(name, occupation);
+
+                        Log.d("TAG", "onActivityResult: " + data.getStringExtra(NewContact.NAME_REPLY));
+                        Log.d("TAG", "onActivityResult: " + data.getStringExtra(NewContact.OCCUPATION_REPLY));
 
                         ContactViewModel.insert(contact);
                     }
@@ -87,8 +96,8 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewAdapt
         Log.d(TAG, "onContactClick: " + contact.getName());
         //startActivity(new Intent(MainActivity.this, NewContact.class));
 
-        Intent intent = new Intent(MainActivity.this, NewContact.class);
+        Intent intent =  new Intent(MainActivity.this, NewContact.class);
         intent.putExtra(CONTACT_ID, contact.getId());
-        startActivity(intent);
+        newContactResultLauncher.launch(intent);
     }
 }

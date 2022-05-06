@@ -18,6 +18,7 @@ import com.google.android.material.snackbar.Snackbar;
 public class NewContact extends AppCompatActivity {
     public static final String NAME_REPLY = "name_reply";
     public static final String OCCUPATION_REPLY = "occupation_reply";
+    public static final String SNACKBAR_TEXT = "snackbar_text";
 
     private EditText enterName;
     private EditText enterOccupation;
@@ -29,6 +30,8 @@ public class NewContact extends AppCompatActivity {
     private Button deleteButton;
 
     private ContactViewModel contactViewModel;
+
+    Intent replyIntent = new Intent();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,6 +68,7 @@ public class NewContact extends AppCompatActivity {
 
                 replyIntent.putExtra(NAME_REPLY, name);
                 replyIntent.putExtra(OCCUPATION_REPLY, occupation);
+                replyIntent.putExtra(SNACKBAR_TEXT,R.string.saved);
                 setResult(RESULT_OK, replyIntent);
 
             } else {
@@ -88,6 +92,8 @@ public class NewContact extends AppCompatActivity {
                 contact.setName(name);
                 contact.setOccupation(occupation);
                 ContactViewModel.delete(contact);
+                replyIntent.putExtra(SNACKBAR_TEXT,R.string.deleted);
+                setResult(RESULT_OK,replyIntent);
                 finish();
             }
         });
@@ -105,6 +111,8 @@ public class NewContact extends AppCompatActivity {
                 contact.setName(name);
                 contact.setOccupation(occupation);
                 ContactViewModel.update(contact);
+                replyIntent.putExtra(SNACKBAR_TEXT,R.string.updated);
+                setResult(RESULT_OK,replyIntent);
                 finish();
             }
         });
