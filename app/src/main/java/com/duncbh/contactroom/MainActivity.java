@@ -49,11 +49,6 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewAdapt
             recyclerViewAdapter = new RecyclerViewAdapter(contacts, this, this);
             recyclerView.setAdapter(recyclerViewAdapter);
 
-//            StringBuilder builder = new StringBuilder();
-//            for (Contact contact : contacts) {
-//                Log.d("TAG", "onCreate: " + contact.getName());
-//                builder.append(" - ").append(contact.getName()).append(" ").append(contact.getOccupation());
-//            }
         });
 
         FloatingActionButton fab = findViewById(R.id.add_contact_fab);
@@ -67,22 +62,27 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewAdapt
     ActivityResultLauncher<Intent> newContactResultLauncher = registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(),
             result -> {
-                if(result.getResultCode()== Activity.RESULT_OK){
+                if (result.getResultCode() == Activity.RESULT_OK) {
                     Intent data = result.getData();
-                    if(data.hasExtra(NewContact.SNACKBAR_TEXT)){
-                        Log.d("TAG", String.valueOf(data.getIntExtra(NewContact.SNACKBAR_TEXT,0)));
+                    if (data.hasExtra(NewContact.SNACKBAR_TEXT)) {
+                        //Log.d("TAG", String.valueOf(data.getIntExtra(NewContact.SNACKBAR_TEXT, 0)));
 
-                        Snackbar.make(recyclerView,data.getIntExtra(NewContact.SNACKBAR_TEXT,0), BaseTransientBottomBar.LENGTH_SHORT).show();
+                        Snackbar.make(recyclerView, data.getIntExtra(NewContact.SNACKBAR_TEXT, 0), BaseTransientBottomBar.LENGTH_SHORT)
+                                .setAction("Show Image", view -> {
+                                    Intent intent = new Intent(MainActivity.this, ShowImage.class);
+                                    startActivity(intent);
+                                })
+                                .show();
                     }
-                    if(data.hasExtra(NewContact.NAME_REPLY)&&data.hasExtra(NewContact.OCCUPATION_REPLY)) {
+                    if (data.hasExtra(NewContact.NAME_REPLY) && data.hasExtra(NewContact.OCCUPATION_REPLY)) {
 
                         String name = data.getStringExtra(NewContact.NAME_REPLY);
                         String occupation = data.getStringExtra(NewContact.OCCUPATION_REPLY);
 
                         Contact contact = new Contact(name, occupation);
 
-                        Log.d("TAG", "onActivityResult: " + data.getStringExtra(NewContact.NAME_REPLY));
-                        Log.d("TAG", "onActivityResult: " + data.getStringExtra(NewContact.OCCUPATION_REPLY));
+//                        Log.d("TAG", "onActivityResult: " + data.getStringExtra(NewContact.NAME_REPLY));
+//                        Log.d("TAG", "onActivityResult: " + data.getStringExtra(NewContact.OCCUPATION_REPLY));
 
                         ContactViewModel.insert(contact);
                     }
@@ -94,9 +94,8 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewAdapt
     public void onContactClick(int position) {
         Contact contact = contactViewModel.allContacts.getValue().get(position);
         Log.d(TAG, "onContactClick: " + contact.getName());
-        //startActivity(new Intent(MainActivity.this, NewContact.class));
 
-        Intent intent =  new Intent(MainActivity.this, NewContact.class);
+        Intent intent = new Intent(MainActivity.this, NewContact.class);
         intent.putExtra(CONTACT_ID, contact.getId());
         newContactResultLauncher.launch(intent);
     }

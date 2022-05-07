@@ -7,7 +7,7 @@
     <string name="description_text">Plus Button Icon</string>
     <string name="update_text">Update</string>
     <string name="delete_text">Delete</string>
-    <string name="updated">\"Updated!\"</string>
+    <string name="updated">Updated!</string>
     <string name="deleted">Deleted!</string>
     <string name="saved">Saved!</string>
 </resources>
