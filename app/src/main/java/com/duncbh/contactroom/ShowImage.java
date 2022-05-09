@@ -1,8 +1,9 @@
 package com.duncbh.contactroom;
 
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.text.method.LinkMovementMethod;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -15,11 +16,12 @@ public class ShowImage extends AppCompatActivity {
         setContentView(R.layout.activity_show_image);
 
         ImageView showImageView = findViewById(R.id.show_imageview);
+        TextView textView = findViewById(R.id.show_url_textview);
 
-        //Drawable image =
-        new ImageRetriever().getImage(imageBitmap -> {
-            showImageView.setImageDrawable(imageBitmap);
+        new ImageRetriever().getImage(imageUrl -> {
+            textView.setText(imageUrl);
         }, showImageView, this.getApplicationContext());
+
     }
 
 }
