@@ -16,6 +16,8 @@ import android.os.Bundle;
 import android.util.Log;
 
 import com.duncbh.contactroom.adapter.RecyclerViewAdapter;
+import com.duncbh.contactroom.data.AgeGenderRetriever;
+import com.duncbh.contactroom.data.GenderAsyncResponse;
 import com.duncbh.contactroom.model.Contact;
 import com.duncbh.contactroom.model.ContactViewModel;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -81,8 +83,16 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewAdapt
 
                         Contact contact = new Contact(name, occupation);
 
-//                        Log.d("TAG", "onActivityResult: " + data.getStringExtra(NewContact.NAME_REPLY));
-//                        Log.d("TAG", "onActivityResult: " + data.getStringExtra(NewContact.OCCUPATION_REPLY));
+                        AgeGenderRetriever ageGenderRetriever = new AgeGenderRetriever();
+
+                        ageGenderRetriever.getAge(age -> {
+                            contact.setAge(age);
+                            Log.d("TESTING", "Age from main: " + contact.getAge());
+                        }, name);
+
+                        ageGenderRetriever.getGender(gender -> {
+                            contact.setGender(gender);
+                        }, name);
 
                         ContactViewModel.insert(contact);
                     }

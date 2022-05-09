@@ -15,7 +15,7 @@ import com.duncbh.contactroom.model.Contact;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-@Database(entities = {Contact.class}, version = 1, exportSchema = false)
+@Database(entities = {Contact.class}, version = 2, exportSchema = false)
 public abstract class ContactRoomDatabase extends RoomDatabase {
     private static final int NUMBER_OF_THREADS = 4;
 
@@ -53,6 +53,7 @@ public abstract class ContactRoomDatabase extends RoomDatabase {
                     INSTANCE = Room.databaseBuilder(context.getApplicationContext(),
                             ContactRoomDatabase.class, "contact_database")
                             .addCallback(sRoomDatabaseCallback)
+                            .fallbackToDestructiveMigration()
                             .build();
                 }
             }
