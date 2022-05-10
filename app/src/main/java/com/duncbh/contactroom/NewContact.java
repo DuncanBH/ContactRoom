@@ -28,6 +28,8 @@ public class NewContact extends AppCompatActivity {
     private boolean isEdit = false;
     private Button updateButton;
     private Button deleteButton;
+    private int age;
+    private String gender;
 
     private ContactViewModel contactViewModel;
 
@@ -53,6 +55,8 @@ public class NewContact extends AppCompatActivity {
                 if (contact != null) {
                     enterName.setText(contact.getName());
                     enterOccupation.setText(contact.getOccupation());
+                    age = contact.getAge();
+                    gender = contact.getGender();
                 }
             });
             isEdit = true;
@@ -110,6 +114,8 @@ public class NewContact extends AppCompatActivity {
                 contact.setId(contactId);
                 contact.setName(name);
                 contact.setOccupation(occupation);
+                contact.setAge(age);
+                contact.setGender(gender);
                 ContactViewModel.update(contact);
                 replyIntent.putExtra(SNACKBAR_TEXT,R.string.updated);
                 setResult(RESULT_OK,replyIntent);

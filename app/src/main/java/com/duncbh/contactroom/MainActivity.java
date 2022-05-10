@@ -106,9 +106,6 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewAdapt
                                 }, firstName);
                             }
                         }, firstName);
-
-
-
                     }
                 }
             }
