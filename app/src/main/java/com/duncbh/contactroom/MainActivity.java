@@ -16,6 +16,9 @@ import android.os.Bundle;
 import android.util.Log;
 
 import com.duncbh.contactroom.adapter.RecyclerViewAdapter;
+import com.duncbh.contactroom.data.AgeAsyncResponse;
+import com.duncbh.contactroom.data.AgeGenderRetriever;
+import com.duncbh.contactroom.data.GenderAsyncResponse;
 import com.duncbh.contactroom.model.Contact;
 import com.duncbh.contactroom.model.ContactViewModel;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -81,10 +84,31 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewAdapt
 
                         Contact contact = new Contact(name, occupation);
 
-//                        Log.d("TAG", "onActivityResult: " + data.getStringExtra(NewContact.NAME_REPLY));
-//                        Log.d("TAG", "onActivityResult: " + data.getStringExtra(NewContact.OCCUPATION_REPLY));
+                        AgeGenderRetriever ageGenderRetriever = new AgeGenderRetriever();
 
-                        ContactViewModel.insert(contact);
+                        //Get first name if multiple names given
+                        String firstName = contact.getName().split(" ")[0];
+
+                        //Get age estimate from api
+                        ageGenderRetriever.getAge(new AgeAsyncResponse() {
+                            @Override
+                            public void processFinished(int result) {
+                                contact.setAge(result);
+                            }
+
+                            //On success callback: get age from 2nd api
+                            @Override
+                            public void onSuccess() {
+                                ageGenderRetriever.getGender(gender -> {
+                                    contact.setGender(gender);
+                                    //Save new contact
+                                    ContactViewModel.insert(contact);
+                                }, firstName);
+                            }
+                        }, firstName);
+
+
+
                     }
                 }
             }
@@ -93,7 +117,7 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewAdapt
     @Override
     public void onContactClick(int position) {
         Contact contact = contactViewModel.allContacts.getValue().get(position);
-        Log.d(TAG, "onContactClick: " + contact.getName());
+        //Log.d(TAG, "onContactClick: " + contact.getName());
 
         Intent intent = new Intent(MainActivity.this, NewContact.class);
         intent.putExtra(CONTACT_ID, contact.getId());

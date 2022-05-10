@@ -13,6 +13,10 @@ public class Contact {
     private String name;
     @ColumnInfo(name = "occupation")
     private String occupation;
+    @ColumnInfo(name = "age")
+    private int age;
+    @ColumnInfo(name = "gender")
+    private String gender;
 
     public Contact() {
     }
@@ -20,6 +24,13 @@ public class Contact {
     public Contact(@NonNull String name, String occupation) {
         this.name = name;
         this.occupation = occupation;
+    }
+
+    public Contact(@NonNull String name, String occupation, int age, String gender) {
+        this.name = name;
+        this.occupation = occupation;
+        this.age = age;
+        this.gender = gender;
     }
 
     public int getId() {
@@ -44,5 +55,21 @@ public class Contact {
 
     public void setOccupation(String occupation) {
         this.occupation = occupation;
+    }
+
+    public int getAge() {
+        return age;
+    }
+
+    public void setAge(int age) {
+        this.age = age;
+    }
+
+    public String getGender() {
+        return gender;
+    }
+
+    public void setGender(String gender) {
+        this.gender = gender;
     }
 }

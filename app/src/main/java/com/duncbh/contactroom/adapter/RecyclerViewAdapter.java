@@ -41,6 +41,8 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         Contact contact = Objects.requireNonNull(contactList).get(position);
         holder.name.setText(contact.getName());
         holder.occupation.setText(contact.getOccupation());
+        holder.age.setText(" Estimated Age: " + contact.getAge());
+        holder.gender.setText("Guessed Gender: " + contact.getGender());
     }
 
     @Override
@@ -52,11 +54,15 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         OnContactClickListener onContactClickListener;
         public TextView name;
         public TextView occupation;
+        public TextView age;
+        public TextView gender;
 
         public ViewHolder(@NonNull View itemView, OnContactClickListener onContactClickListener) {
             super(itemView);
             name = itemView.findViewById(R.id.row_name_textview);
             occupation = itemView.findViewById(R.id.row_occupation_textview);
+            age = itemView.findViewById(R.id.row_age_textview);
+            gender = itemView.findViewById(R.id.row_gender_textview);
             this.onContactClickListener = onContactClickListener;
             itemView.setOnClickListener(this);
         }
