@@ -26,7 +26,7 @@ public abstract class ContactRoomDatabase extends RoomDatabase {
     private static final RoomDatabase.Callback sRoomDatabaseCallback =
             new RoomDatabase.Callback() {
                 public void onCreate(@NonNull SupportSQLiteDatabase db) {
-                    Log.d("TEST", "Hello from onCreate in the Callback");
+                    //Log.d("TEST", "Hello from onCreate in the Callback");
                     super.onCreate(db);
                     databaseWriteExecutor.execute(() -> {
                         ContactDao contactDao = INSTANCE.contactDao();
@@ -49,7 +49,7 @@ public abstract class ContactRoomDatabase extends RoomDatabase {
         if (INSTANCE == null) {
             synchronized (ContactRoomDatabase.class) {
                 if (INSTANCE == null) {
-                    Log.d("TEST", "Hello from the getDatabase");
+                    //Log.d("TEST", "Hello from the getDatabase");
                     INSTANCE = Room.databaseBuilder(context.getApplicationContext(),
                             ContactRoomDatabase.class, "contact_database")
                             .addCallback(sRoomDatabaseCallback)

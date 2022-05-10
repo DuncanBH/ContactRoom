@@ -117,7 +117,7 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewAdapt
     @Override
     public void onContactClick(int position) {
         Contact contact = contactViewModel.allContacts.getValue().get(position);
-        Log.d(TAG, "onContactClick: " + contact.getName());
+        //Log.d(TAG, "onContactClick: " + contact.getName());
 
         Intent intent = new Intent(MainActivity.this, NewContact.class);
         intent.putExtra(CONTACT_ID, contact.getId());

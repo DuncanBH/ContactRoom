@@ -20,7 +20,7 @@ public class AgeGenderRetriever {
                 response -> {
                     try {
                         int age = response.getInt("age");
-                        Log.d("TESTING", "getAge: " + age);
+                        //Log.d("TESTING", "getAge: " + age);
                         ageResult = age;
                         callback.onSuccess();
                     } catch (JSONException e) {
@@ -33,7 +33,7 @@ public class AgeGenderRetriever {
                 }
         );
         AppController.getInstance().addToRequestQueue(jsonObjectRequest);
-        Log.d("TESTING", "getAge2: " + ageResult);
+        //Log.d("TESTING", "getAge2: " + ageResult);
         return ageResult;
     }
     public String getGender(GenderAsyncResponse callback, String name) {
