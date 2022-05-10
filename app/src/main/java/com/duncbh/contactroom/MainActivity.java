@@ -16,6 +16,7 @@ import android.os.Bundle;
 import android.util.Log;
 
 import com.duncbh.contactroom.adapter.RecyclerViewAdapter;
+import com.duncbh.contactroom.data.AgeAsyncResponse;
 import com.duncbh.contactroom.data.AgeGenderRetriever;
 import com.duncbh.contactroom.data.GenderAsyncResponse;
 import com.duncbh.contactroom.model.Contact;
@@ -85,16 +86,29 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewAdapt
 
                         AgeGenderRetriever ageGenderRetriever = new AgeGenderRetriever();
 
-                        ageGenderRetriever.getAge(age -> {
-                            contact.setAge(age);
-                            Log.d("TESTING", "Age from main: " + contact.getAge());
-                        }, name);
+                        //Get first name if multiple names given
+                        String firstName = contact.getName().split(" ")[0];
 
-                        ageGenderRetriever.getGender(gender -> {
-                            contact.setGender(gender);
-                        }, name);
+                        //Get age estimate from api
+                        ageGenderRetriever.getAge(new AgeAsyncResponse() {
+                            @Override
+                            public void processFinished(int result) {
+                                contact.setAge(result);
+                            }
 
-                        ContactViewModel.insert(contact);
+                            //On success callback: get age from 2nd api
+                            @Override
+                            public void onSuccess() {
+                                ageGenderRetriever.getGender(gender -> {
+                                    contact.setGender(gender);
+                                    //Save new contact
+                                    ContactViewModel.insert(contact);
+                                }, firstName);
+                            }
+                        }, firstName);
+
+
+
                     }
                 }
             }

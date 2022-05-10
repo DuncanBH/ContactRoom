@@ -22,6 +22,7 @@ public class AgeGenderRetriever {
                         int age = response.getInt("age");
                         Log.d("TESTING", "getAge: " + age);
                         ageResult = age;
+                        callback.onSuccess();
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
